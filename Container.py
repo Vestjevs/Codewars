@@ -34,7 +34,7 @@ class Email_attachments:
 
 
 class Email_message:
-    def __init__(self, message):
+    def __init__(self, message=None):
         self.message = message
 
     def __str__(self):
@@ -145,22 +145,22 @@ class Email_builder:
         self.__theme = theme
         self.__sender = sender
 
-    def set_sender(self, sender):
+    def build_sender(self, sender):
         self.__sender = Email_sender(sender)
 
-    def set_theme(self, theme):
+    def build_theme(self, theme):
         self.__theme = Email_theme(theme)
 
-    def set_attachments(self, attachments):
+    def build_attachments(self, attachments):
         self.__attachments = Email_attachments(attachments)
 
-    def set_message(self, message):
+    def build_message(self, message):
         self.__message = Email_message(message)
 
-    def set_status(self, status):
+    def build_status(self, status):
         self.__status = Email_status(status)
 
-    def set_date(self, date):
+    def build_date(self, date):
         self.__date = Email_date(date)
 
     def build_email(self):
@@ -360,12 +360,12 @@ class Inbox_builder:
                                                                     list(json_data['messages']),
                                                                     list(json_data['dates']),
                                                                     list(json_data['status'])):
-                builder.set_date(date)
-                builder.set_message(message)
-                builder.set_status(status)
-                builder.set_attachments(attach)
-                builder.set_theme(theme)
-                builder.set_sender(sender)
+                builder.build_date(date)
+                builder.build_message(message)
+                builder.build_status(status)
+                builder.build_attachments(attach)
+                builder.build_theme(theme)
+                builder.build_sender(sender)
                 email = builder.build_email()
                 chain = Email_chain()
                 chain.add_to_chain(email)
