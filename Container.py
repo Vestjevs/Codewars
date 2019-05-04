@@ -118,11 +118,11 @@ class Email:
                                                                           str(self.__attachments),
                                                                           str(self.__message)), END)
         else:
-            result = "{0}{1}{2}{3}".format(BOLD, DARKCYAN,
-                                           '{}\n{}\n{}\n{}\n{}'.format(str(self.__date), str(self.__sender),
-                                                                       str(self.__theme),
-                                                                       str(self.__attachments),
-                                                                       str(self.__message)), END)
+            result = "{0}{1}{2}".format(BOLD, MAGENTA,
+                                        '{}\n{}\n{}\n{}\n{}'.format(str(self.__date), str(self.__sender),
+                                                                    str(self.__theme),
+                                                                    str(self.__attachments),
+                                                                    str(self.__message)), END)
         return result
 
     def __cmp__(self, other):
@@ -220,7 +220,7 @@ class Email_spam:
         self.__spam.remove(chain)
 
     def __str__(self):
-        return '{0}SPAM: {1}{2}'.format(MAGENTA, END, ''.join(str(k) for k in self.__spam))
+        return '{0}{1}SPAM:{2} {3}'.format(UNDERLINE, DARKCYAN, END, ''.join(str(k) for k in self.__spam))
 
     def __len__(self):
         return len(self.__spam)
@@ -278,7 +278,7 @@ class Email_work:
         return result
 
     def __str__(self):
-        return '{0}WORK: {1}{2}'.format(MAGENTA, END, ''.join(str(k) for k in self.__work))
+        return '{0}{1}WORK:{2} {3}'.format(UNDERLINE, DARKCYAN, END, ''.join(str(k) for k in self.__work))
 
     def __len__(self):
         return len(self.__work)
@@ -296,7 +296,7 @@ class Email_duties:
         self.__duties.remove(chain)
 
     def __str__(self):
-        return '{0}DUTIES: {1}{2}'.format(MAGENTA, END, ''.join(str(k) for k in self.__duties))
+        return '{0}{1}DUTIES:{2} {3}'.format(UNDERLINE, DARKCYAN, END, ''.join(str(k) for k in self.__duties))
 
     def __len__(self):
         return len(self.__duties)
@@ -377,7 +377,7 @@ class Inbox_builder:
 
 def main():
     builder = Inbox_builder()
-    builder.set_path_to_json('/home/vestjevs/files/progs/JsonSet/emails.json')
+    builder.set_path_to_json('/home/vestjevs/files/progs/Json/emails.json')
     inbox = builder.build_inbox()
     print(inbox)
 
