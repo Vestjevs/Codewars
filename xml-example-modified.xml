@@ -1,0 +1,23 @@
+<studentlist>
+    <student id="1">
+        <firstname>Greg</firstname>
+        <lastname>Dean</lastname>
+        <certificate type="with distinction">True</certificate>
+        <scores>
+            <module1>100.0</module1>
+            <module2>80</module2>
+            <module3>100</module3>
+        </scores>
+    </student>
+    <student id="2">
+        <firstname>John</firstname>
+        <lastname>Weak</lastname>
+        <certificate>True</certificate>
+        <scores>
+            <module1>80</module1>
+            <module2>90</module2>
+            <module3>100</module3>
+        </scores>
+    </student>
+
+</studentlist>

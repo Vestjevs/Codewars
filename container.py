@@ -9,7 +9,7 @@ MAGENTA = '\033[35m'
 END = '\033[0m'
 
 
-class Email_sender:
+class EmailSender:
     def __init__(self, full_name):
         self.full_name = full_name
 
@@ -17,7 +17,7 @@ class Email_sender:
         return '\u258DSender: {0}'.format(str(self.full_name))
 
 
-class Email_theme:
+class EmailTheme:
     def __init__(self, theme=None):
         self.theme = theme
 
@@ -25,7 +25,7 @@ class Email_theme:
         return '\u258DHeadline: {0}'.format(str(self.theme))
 
 
-class Email_attachments:
+class EmailAttachments:
     def __init__(self, attachments=None):
         self.attachments = attachments or []
 
@@ -33,7 +33,7 @@ class Email_attachments:
         return '\u258DAttachments: {0}'.format('Empty' if len(self.attachments) == 0 else str(self.attachments))
 
 
-class Email_message:
+class EmailMessage:
     def __init__(self, message=None):
         self.message = message
 
@@ -41,7 +41,7 @@ class Email_message:
         return '\u258DMessage: {}'.format(str(self.message))
 
 
-class Email_status:
+class EmailStatus:
     def __init__(self, status):
         self.__status = status
 
@@ -52,14 +52,13 @@ class Email_status:
         return 'Status: {}'.format(self.__status)
 
 
-class Email_date:
+class EmailDate:
     def __init__(self, date):
         self.__days = int(str(date).split('/')[0])
         self.__month = int(str(date).split('/')[1])
         self.__year = int(str(date).split('/')[2])
 
     def __cmp__(self, other):
-        result = -1
         if self.__days == other.days() and self.__month == other.month() and self.__year == other.year():
             result = 0
 
@@ -135,7 +134,7 @@ class Email:
         return self.__date
 
 
-class Email_builder:
+class EmailBuilder:
 
     def __init__(self, sender=None, theme=None, attachments=None, message=None, status=None, date=None):
         self.__date = date
@@ -146,28 +145,28 @@ class Email_builder:
         self.__sender = sender
 
     def build_sender(self, sender):
-        self.__sender = Email_sender(sender)
+        self.__sender = EmailSender(sender)
 
     def build_theme(self, theme):
-        self.__theme = Email_theme(theme)
+        self.__theme = EmailTheme(theme)
 
     def build_attachments(self, attachments):
-        self.__attachments = Email_attachments(attachments)
+        self.__attachments = EmailAttachments(attachments)
 
     def build_message(self, message):
-        self.__message = Email_message(message)
+        self.__message = EmailMessage(message)
 
     def build_status(self, status):
-        self.__status = Email_status(status)
+        self.__status = EmailStatus(status)
 
     def build_date(self, date):
-        self.__date = Email_date(date)
+        self.__date = EmailDate(date)
 
     def build_email(self):
         return Email(self.__sender, self.__theme, self.__attachments, self.__message, self.__date, self.__status)
 
 
-class Email_chain:
+class EmailChain:
     def __init__(self):
         self.__chain = []
 
@@ -208,7 +207,7 @@ class Email_chain:
         return result
 
 
-class Email_spam:
+class EmailSpam:
     def __init__(self):
         self.__spam = []
 
@@ -246,7 +245,7 @@ class Email_spam:
         return result
 
 
-class Email_work:
+class EmailWork:
     def __init__(self):
         self.__work = []
 
@@ -284,7 +283,7 @@ class Email_work:
         return len(self.__work)
 
 
-class Email_duties:
+class EmailDuties:
     def __init__(self):
         self.__duties = []
 
@@ -324,9 +323,9 @@ class Email_duties:
 
 class Inbox:
     def __init__(self):
-        self.__spam = Email_spam()
-        self.__duties = Email_work()
-        self.__work = Email_duties()
+        self.__spam = EmailSpam()
+        self.__duties = EmailWork()
+        self.__work = EmailDuties()
 
     def add_to_spam(self, chain):
         self.__spam.add_email(chain)
@@ -341,7 +340,7 @@ class Inbox:
         return '{}\n\n{}\n\n{}'.format(self.__spam, self.__duties, self.__work)
 
 
-class Inbox_builder:
+class InboxBuilder:
     def __init__(self):
         self.__path = ''
 
@@ -351,7 +350,7 @@ class Inbox_builder:
     def build_inbox(self):
         inbox = Inbox()
         random_species = ['Spam', 'Work', 'Duties']
-        builder = Email_builder()
+        builder = EmailBuilder()
         with open(self.__path) as f:
             json_data = json.load(f)
             for sender, theme, attach, message, date, status in zip(list(json_data['senders']),
@@ -367,7 +366,7 @@ class Inbox_builder:
                 builder.build_theme(theme)
                 builder.build_sender(sender)
                 email = builder.build_email()
-                chain = Email_chain()
+                chain = EmailChain()
                 chain.add_to_chain(email)
                 choice = random.choice(random_species)
                 inbox.add_to_work(chain) if choice == 'Work' else inbox.add_to_duties(
@@ -376,7 +375,7 @@ class Inbox_builder:
 
 
 def main():
-    builder = Inbox_builder()
+    builder = InboxBuilder()
     builder.set_path_to_json('/home/vestjevs/files/progs/Json/emails.json')
     inbox = builder.build_inbox()
     print(inbox)
