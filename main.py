@@ -1,48 +1,56 @@
-from functools import partial
-from random import random, randint
-from fractions import Fraction
-import operator as op
-
+import re
 import numpy as np
+import requests
+import collections
+
+compare = lambda x, y: collections.Counter(x) == collections.Counter(y)
 
 
-def example(i):
-    return f'{random.random():.{i}f}'
+def increment_string(strng):
+    found = re.findall("[0-9]+", strng)
+    if len(found) == 0:
+        string = strng + "1"
+        return string
+    else:
+        length = len(found[-1])
+        val = int(found[-1])
+        val += 1
+        string = str(strng[0:len(strng) - len(found[-1])] + '0' * (length - len(str(val))) + str(val))
+
+    return string
 
 
-class TripleElementListIteration:
-    def __init__(self, lst):
-        self.__lst = lst
-        self.__length = 0
+def done_or_not(board):  # board[i][j]
+    s = "Finished!"
+    arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    def __next__(self):
-        if self.__length < len(self.__lst):
-            self.__length += 1
-            return self.__lst[self.__length - 1]
+    for i in range(9):
+        if not compare(arr, [board[j][i] for j in range(9)]):
+            s = "Try again!"
+        elif not compare(arr, board[i]):
+            s = "Try again!"
+
+    for i in range(0, 9, 3):
+        if not compare(arr, board[0 + i][0:3] + board[1 + i][0:3] + board[2 + i][0:3]):
+            s = "Try again!"
+        elif not compare(arr, board[0 + i][3:6] + board[1 + i][3:6] + board[2 + i][3:6]):
+            s = "Try again!"
+        elif not compare(arr, board[0 + i][6:9] + board[1 + i][6:9] + board[2 + i][6:9]):
+            s = "Try again!"
+
+    return s
+
+
+def pig_it(word):
+    s = []
+    arr = word.split(" ")
+    for elem in arr:
+        if str(elem).isalpha():
+            s.append(str(elem)[1:len(str(elem))] + str(elem)[0] + "ay")
         else:
-            raise StopIteration
+            s.append(str(elem))
+
+    return " ".join(s)
 
 
-class MyList(list):
-    def __iter__(self):
-        return TripleElementListIteration(self)
-
-
-def random_generator(k):
-    for i in range(k):
-        yield randint(1, 100)
-
-
-arr = [("John", "Malcolm", " Andrew"), ("Vest", "Jevs"), ("Svejentsev", "Aleksey")]
-
-length = lambda x: len(''.join(x))
-
-sort_by_last = partial(list.sort, key=op.itemgetter(-1))
-print(arr)
-sort_by_last(arr)
-print(arr)
-
-y = ['ara', 'assh', 'asdnb']
-sort_by_last(y)
-print(y)
-print(np.log(7))
+print(pig_it("Hello world !"))
